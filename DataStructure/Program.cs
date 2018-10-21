@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace DataStructure
@@ -7,16 +8,9 @@ namespace DataStructure
     {
         static void Main(string[] args)
         {
-            var sw = new Stopwatch();
 
-            sw.Start();
-            ulong n = Recursive.Fib3(8000);
-            sw.Stop();
-            string t1 = sw.Elapsed.ToString();
-            Console.WriteLine(n + "   " + t1);
-
-
-            Console.WriteLine("Hello World!");
+            SortsTime.Time();
+            
             Console.Read();
         }
     }
