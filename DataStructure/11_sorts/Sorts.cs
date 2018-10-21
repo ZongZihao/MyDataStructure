@@ -93,6 +93,7 @@ namespace DataStructure
             }
         }
 
+        
         public static void MergeSort(int[] a)
         {
             Merge(a, 0, a.Length - 1);
@@ -118,7 +119,8 @@ namespace DataStructure
             //排序到临时变量
             while (i <= mid && j <= right)
             {
-                if(a[i] < a[j])
+                //此步骤为是否为稳定排序的关键
+                if(a[i] <= a[j])
                 {
                     tmp[k] = a[i];
                     i++;
@@ -156,46 +158,132 @@ namespace DataStructure
                 index++;
                 left++;
             }
+        }
 
+        public static void QuickSort(int[] list)
+        {
+            QuickSortInternal(list, 0, list.Length - 1);
+        }
+
+        private static void QuickSortInternal(int[] list, int left, int right)
+        {
+            //基线条件
+            if (left >= right) return;
+
+            //获取pivod分区点
+            int pivod = Partition(list, left, right);
+
+            QuickSortInternal(list, left, pivod - 1);
+            QuickSortInternal(list, pivod + 1, right);
+        }
+
+        private static int Partition(int[] list, int left, int right)
+        {
+            //未处理区间指针
+            int i = left;
+            int j = left;
+            //定义临时变量
+            int tmp;
+
+            //进行分区数据交换
+            while(j < right)
+            {
+                if(list[j] < list[right])
+                {
+                    tmp = list[j];
+                    list[j] = list[i];
+                    list[i] = tmp;
+                    i++;
+                }
+                j++;
+            }
+            //交换已处理区间右侧 和 pivod的位置
+            tmp = list[right];
+            list[right] = list[i];
+            list[i] = tmp;
+
+            //返回pivod
+            return i;
         }
 
 
+        //在O(N)内查找第K大元素
+        public static int FindElement(int[] list, int k)
+        {
+            return FindElementInternal(list, 0, list.Length - 1, k);
+        }
+
+        private static int FindElementInternal(int[] list, int left, int right, int k)
+        {
+
+            //获取pivod分区点
+            int pivod = Partition(list, left, right);
+            if (pivod == k - 1) return list[pivod];
+
+            if (pivod > k - 1)
+            {
+                return FindElementInternal(list, left, pivod - 1, k);
+            }
+            else
+            {
+                return FindElementInternal(list, pivod + 1, right, k);
+            }
+
+        }
     }
+
+    
+
 
 
     public class SortsTime
     {
         public static void Time()
         {
-            //数据长度
-            Console.Write("请输入数据长度: ");
-            int len = int.Parse(Console.ReadLine());
-            Console.WriteLine();
-            var list1 = new int[len];
-            var rand = new Random();
-            for (int i = 0; i < list1.Length; i++)
+            while (true)
             {
-                list1[i] = rand.Next(0, 100000);
+                //数据长度
+                Console.Write("请输入数据长度: ");
+                int len = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+                var list1 = new int[len];
+                var rand = new Random();
+                for (int i = 0; i < list1.Length; i++)
+                {
+                    list1[i] = rand.Next(-100000, 100000);
+                }
+                var list2 = (int[])list1.Clone();
+                var list3 = (int[])list1.Clone();
+                var list4 = (int[])list1.Clone();
+                var list5 = (int[])list1.Clone();
+                var list6 = (int[])list1.Clone();
+
+
+                //string t1 = TimeHelper.Caculate(Sorts.BubbleSort, list1);
+
+                //string t2 = TimeHelper.Caculate(Sorts.InsertSort, list2);
+
+                //string t3 = TimeHelper.Caculate(Sorts.SelectionSort, list3);
+
+                //string t4 = TimeHelper.Caculate(Sorts.MergeSort, list4);
+
+                string t5 = TimeHelper.Caculate(Sorts.QuickSort, list5);
+
+                string t6 = TimeHelper.Caculate(Sorts.FindElement, list6, 58, out int res);
+
+
+
+                //Console.WriteLine("冒泡排序时间测试, 数据长度{0}:  " + t1 + "s", len);
+                //Console.WriteLine("插入排序时间测试, 数据长度{0}:  " + t2 + "s", len);
+                //Console.WriteLine("选择排序时间测试, 数据长度{0}:  " + t3 + "s", len);
+                //Console.WriteLine("归并排序时间测试, 数据长度{0}:  " + t4 + "s", len);
+                Console.WriteLine("快速排序时间测试, 数据长度{0}:  " + t5 + "s", len);
+                Console.WriteLine("查找第K大元素时间测试, 数据长度{0}:  " + t6 + "s   元素值为: " + res, len);
+
+                Console.WriteLine();
+                Console.WriteLine("--------------------------------------------------");
+
             }
-            var list2 = (int[])list1.Clone();
-            var list3 = (int[])list1.Clone();
-            var list4 = (int[])list1.Clone();
-
-
-            string t1 = TimeHelper.Caculate(Sorts.BubbleSort, list1);
-
-            string t2 = TimeHelper.Caculate(Sorts.InsertSort, list2);
-
-            string t3 = TimeHelper.Caculate(Sorts.SelectionSort, list3);
-
-            string t4 = TimeHelper.Caculate(Sorts.MergeSort, list4);
-
-
-
-            Console.WriteLine("冒泡排序时间测试, 数据长度{0}:  " + t1 + "s", len);
-            Console.WriteLine("插入排序时间测试, 数据长度{0}:  " + t2 + "s", len);
-            Console.WriteLine("选择排序时间测试, 数据长度{0}:  " + t3 + "s", len);
-            Console.WriteLine("归并排序时间测试, 数据长度{0}:  " + t4 + "s", len);
         }
     }
 }

@@ -10,6 +10,8 @@ namespace DataStructure
         {
 
             SortsTime.Time();
+
+           
             
             Console.Read();
         }
