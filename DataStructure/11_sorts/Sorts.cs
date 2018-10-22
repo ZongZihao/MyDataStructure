@@ -93,7 +93,9 @@ namespace DataStructure
             }
         }
 
-        
+        /*
+         * 归并排序
+         */ 
         public static void MergeSort(int[] a)
         {
             Merge(a, 0, a.Length - 1);
@@ -160,6 +162,9 @@ namespace DataStructure
             }
         }
 
+        /*
+         * 快速排序
+         */
         public static void QuickSort(int[] list)
         {
             QuickSortInternal(list, 0, list.Length - 1);
@@ -230,6 +235,60 @@ namespace DataStructure
             }
 
         }
+
+
+        public static void BucketSort(int[] list)
+        {
+
+        }
+
+        
+        public static void CountingSort(int[] list)
+        {
+            if (list.Length <= 1) return;
+            //查找数据范围
+            int max = list[0];
+            for(int i = 0; i < list.Length; i++)
+            {
+                if (list[i] > max)
+                    max = list[i];
+            }
+
+            //创建大小为max + 1的数组
+            int[] c = new int[max + 1];
+
+            //计算每个元素的个数放入数组
+            for(int i = 0; i < list.Length; i++)
+            {
+                c[list[i]]++;
+            }
+
+            //将c数据进行累加
+            for(int i = 1; i < c.Length; i++)
+            {
+                c[i] = c[i - 1] + c[i];
+            }
+
+            //临时数组储存排序后的结果
+            int[] tmp = new int[list.Length];
+
+            //计算排序  存入新数组
+            for(int i = 0; i < list.Length; i++)
+            {
+                //计算数据应该在的索引位置
+                int index = c[list[i]] - 1;
+                //插入数据
+                tmp[index] = list[i];
+                //计数数组－1;
+                c[list[i]]--;
+            }
+
+            //赋值到原数组
+            for(int i = 0; i < list.Length; i++)
+            {
+                list[i] = tmp[i];
+            }         
+        } 
     }
 
     
@@ -250,7 +309,7 @@ namespace DataStructure
                 var rand = new Random();
                 for (int i = 0; i < list1.Length; i++)
                 {
-                    list1[i] = rand.Next(-100000, 100000);
+                    list1[i] = rand.Next(0, 100);
                 }
                 var list2 = (int[])list1.Clone();
                 var list3 = (int[])list1.Clone();
@@ -267,9 +326,11 @@ namespace DataStructure
 
                 //string t4 = TimeHelper.Caculate(Sorts.MergeSort, list4);
 
-                string t5 = TimeHelper.Caculate(Sorts.QuickSort, list5);
+                //string t5 = TimeHelper.Caculate(Sorts.QuickSort, list5);
 
-                string t6 = TimeHelper.Caculate(Sorts.FindElement, list6, 58, out int res);
+                string t6 = TimeHelper.Caculate(Sorts.CountingSort, list6);
+
+                //string t6 = TimeHelper.Caculate(Sorts.FindElement, list6, 58, out int res);
 
 
 
@@ -277,8 +338,9 @@ namespace DataStructure
                 //Console.WriteLine("插入排序时间测试, 数据长度{0}:  " + t2 + "s", len);
                 //Console.WriteLine("选择排序时间测试, 数据长度{0}:  " + t3 + "s", len);
                 //Console.WriteLine("归并排序时间测试, 数据长度{0}:  " + t4 + "s", len);
-                Console.WriteLine("快速排序时间测试, 数据长度{0}:  " + t5 + "s", len);
-                Console.WriteLine("查找第K大元素时间测试, 数据长度{0}:  " + t6 + "s   元素值为: " + res, len);
+                //Console.WriteLine("快速排序时间测试, 数据长度{0}:  " + t5 + "s", len);
+                Console.WriteLine("计数排序时间测试, 数据长度{0}:  " + t6 + "s", len);
+                //Console.WriteLine("查找第K大元素时间测试, 数据长度{0}:  " + t6 + "s   元素值为: " + res, len);
 
                 Console.WriteLine();
                 Console.WriteLine("--------------------------------------------------");
