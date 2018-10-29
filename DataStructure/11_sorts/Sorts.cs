@@ -212,37 +212,16 @@ namespace DataStructure
         }
 
 
-        //在O(N)内查找第K大元素
-        public static int FindElement(int[] list, int k)
-        {
-            return FindElementInternal(list, 0, list.Length - 1, k);
-        }
-
-        private static int FindElementInternal(int[] list, int left, int right, int k)
-        {
-
-            //获取pivod分区点
-            int pivod = Partition(list, left, right);
-            if (pivod == k - 1) return list[pivod];
-
-            if (pivod > k - 1)
-            {
-                return FindElementInternal(list, left, pivod - 1, k);
-            }
-            else
-            {
-                return FindElementInternal(list, pivod + 1, right, k);
-            }
-
-        }
-
-
         public static void BucketSort(int[] list)
         {
 
         }
 
-        
+        /*
+         * 计数排序
+         * 时间复杂度O(n)
+         * 非原地排序
+         */
         public static void CountingSort(int[] list)
         {
             if (list.Length <= 1) return;
@@ -309,7 +288,7 @@ namespace DataStructure
                 var rand = new Random();
                 for (int i = 0; i < list1.Length; i++)
                 {
-                    list1[i] = rand.Next(0, 100);
+                    list1[i] = rand.Next(-100000, 100000);
                 }
                 var list2 = (int[])list1.Clone();
                 var list3 = (int[])list1.Clone();
